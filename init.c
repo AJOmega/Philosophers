@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 22:16:50 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/12/06 00:27:16 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:17:56 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	init_all(t_rules *rules, char *argv[])
 	rules->time_sleep = ft_atoi(argv[4]);
 	rules->all_ate = 0;
 	rules->died = 0;
-	if (rules->philo_num < 2 || rules->time_death < 0 || rules->time_eat < 0 || \
+	if (rules->philo_num < 1 || rules->time_death < 0 || rules->time_eat < 0 || \
 		rules->time_sleep < 0 || (argv[5] && ft_atoi(argv[5]) < 0) || \
 		rules->philo_num > 250)
 		return (error_handle(2));
