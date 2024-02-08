@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/07 21:21:29 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/08 23:04:11 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,14 @@ void	exit_launcher(t_rules *rules, t_philo *philos)
 	int i;
 
 	i = -1;
-	while (++i < rules->philo_num)
+	if (rules->philo_num > 1)
 	{
-		printf("Philo Number: %d, Philo ID: %d\n", i, philos[i].id);
-		pthread_join(philos[i].thread_id, NULL);
+        int i = -1;
+		while (++i < rules->philo_num)
+		{
+			pthread_join(philos[i].thread_id, NULL);
+		}
 	}
-	printf("É encima CARALHO\n");
 	i = -1;
 	while (++i < rules->philo_num)
 		pthread_mutex_destroy(&(rules->forks[i]));
@@ -86,14 +88,12 @@ void	death_checker(t_rules *r, t_philo *p)
 			{
 				action_print(r, i, "\033[1;31mdied\033[0m");
 				r->died = 1;
-				printf("Hey Close, YOU DIED, %d\n", r->died);
 			}
 			pthread_mutex_unlock(&(r->meal_check));
 			usleep(100);
 		}
 		if (r->died)
 		{
-			printf("Entrastes aqui meu filho da PUTA\n");
 			break ;	
 		}
 		i = 0;
@@ -102,7 +102,6 @@ void	death_checker(t_rules *r, t_philo *p)
 		if (i == r->philo_num)
 			r->all_ate = 1;
 	}
-	printf("Saiu do Death Checker\n");
 }
 
 int	launcher(t_rules *rules)
