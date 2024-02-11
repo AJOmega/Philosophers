@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/09 19:55:50 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/11 22:18:13 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*p_thread(void *void_philosopher)
 			philo_alone(philo);
 		else
 			philo_eats(philo);
-		if (rules->all_ate)
+		if (rules->all_ate || rules->philo_num == 1)
 			break ;
 		action_print(rules, philo->id, "\033[1;34mis sleeping\033[0m");
 		smart_sleep(rules->time_sleep, rules);
@@ -70,22 +70,15 @@ void	*p_thread(void *void_philosopher)
 
 void	exit_launcher(t_rules *rules, t_philo *philos)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	printf("Adeus");
-	if (rules->philo_num > 1)
+	if (rules->philo_num > 0)
 	{
-        int i = -1;
+        i = -1;
 		while (++i < rules->philo_num)
-		{
-			printf("Ola");
 			pthread_join(philos[i].thread_id, NULL);
-		}
 	}
-	// }
-	// else
-	// 	pthread_detatch(philos[i].thread_id);
 	i = -1;
 	while (++i < rules->philo_num)
 		pthread_mutex_destroy(&(rules->forks[i]));
