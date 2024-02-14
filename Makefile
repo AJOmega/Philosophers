@@ -4,7 +4,7 @@ CC = cc
 
 FLAGS = -Wall -Wextra -Wextra -pthread
 
-LEAKFLAGS = -g3 -fsanitize=address
+LEAKFLAGS = -g3 -fsanitize=pthread
 
 RM = rm -rf
 

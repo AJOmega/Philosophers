@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/12/07 00:20:56 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/13 21:12:25 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,15 @@ typedef struct s_rules
 	t_philo				philosophers[250];
 }	t_rules;
 
+// Main.c
+
+void		philo_alone(t_philo *philo);
+
 // Init.c
 
-int	init_mutex(t_rules *rules);
-int	init_philosophers(t_rules *rules);
-int	init_all(t_rules *rules, char *argv[]);
+int			init_mutex(t_rules *rules);
+int			init_philosophers(t_rules *rules);
+int			init_all(t_rules *rules, char *argv[]);
 
 // utils.c
 
@@ -68,13 +72,14 @@ void		action_print(t_rules *rules, int id, char *string);
 
 // error_handle.c
 
-int	error_handle(int error);
+int			error_handle(int error);
 
 // launcher.c
-void	philo_eats(t_philo *philo);
-void	*p_thread(void *void_philosopher);
-void	exit_launcher(t_rules *rules, t_philo *philos);
-void	death_checker(t_rules *r, t_philo *p);
-int		launcher(t_rules *rules);
+
+void		philo_eats(t_philo *philo);
+void		*p_thread(void *void_philosopher);
+void		exit_launcher(t_rules *rules, t_philo *philos);
+void		death_checker(t_rules *r, t_philo *p);
+int			launcher(t_rules *rules);
 
 #endif

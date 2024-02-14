@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:48:30 by jabreu-d          #+#    #+#             */
-/*   Updated: 2023/12/07 00:22:16 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/13 21:09:24 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	error_handle(int error)
 {
-	// printf("%s", ERROR);
 	printf("\033[1;31m");
 	if (error == 1)
 		printf("Error: Invalid number of arguments\n");

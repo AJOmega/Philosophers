@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/11 22:18:13 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/13 23:21:48 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,27 @@
 void	philo_eats(t_philo *philo)
 {
 	t_rules	*rules;
+	t_philo	*next_philo;
 
 	rules = philo->rules;
-	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
-	action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
-	pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
-	action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+	if (philo->id < rules->philo_num)
+		next_philo = &philo[1];
+	else
+		next_philo = &philo[-1 * (rules->philo_num - 1)];
+	if (philo->id < next_philo->id)
+	{
+		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
+		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+	}
+	else
+	{
+		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
+		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+	}
 	pthread_mutex_lock(&(rules->meal_check));
 	action_print(rules, philo->id, "\033[1;32mis eating\033[0m");
 	philo->t_last_meal = timestamp();
@@ -29,16 +44,6 @@ void	philo_eats(t_philo *philo)
 	(philo->x_ate)++;
 	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
-}
-
-void	philo_alone(t_philo *philo)
-{
-	t_rules	*rules;
-
-	rules = philo->rules;
-	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
-	action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
-	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 }
 
 void	*p_thread(void *void_philosopher)
@@ -75,7 +80,7 @@ void	exit_launcher(t_rules *rules, t_philo *philos)
 	i = -1;
 	if (rules->philo_num > 0)
 	{
-        i = -1;
+		i = -1;
 		while (++i < rules->philo_num)
 			pthread_join(philos[i].thread_id, NULL);
 	}
@@ -104,7 +109,7 @@ void	death_checker(t_rules *r, t_philo *p)
 			usleep(100);
 		}
 		if (r->died)
-			break ;	
+			break ;
 		i = 0;
 		while (r->nb_eat != -1 && i < r->philo_num && p[i].x_ate >= r->nb_eat)
 			i++;

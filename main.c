@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:28:56 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/11 22:17:54 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/02/13 21:15:42 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,19 @@ int	main(int argc, char *argv[])
 
 	if (argc != 5 && argc != 6)
 		return (error_handle(1));
-	if ((return_value = init_all(&rules, argv)))
+	return_value = init_all(&rules, argv);
+	if (return_value)
 		return (return_value);
 	if (launcher(&rules) != 0)
 		return (5);
+}
+
+void	philo_alone(t_philo *philo)
+{
+	t_rules	*rules;
+
+	rules = philo->rules;
+	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+	action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
+	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 }
