@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/13 21:12:25 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 00:59:04 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_rules
 	pthread_mutex_t		meal_check;
 	pthread_mutex_t		forks[250];
 	pthread_mutex_t		writing;
+	pthread_mutex_t		death_mutex;
 	t_philo				philosophers[250];
 }	t_rules;
 

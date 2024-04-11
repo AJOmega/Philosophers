@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:54:44 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/13 23:14:53 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 00:44:31 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,16 @@ void	smart_sleep(long long time, t_rules *rules)
 	long long	i;
 
 	i = timestamp();
-	while (!(rules->died))
+	// while (!(rules->died))
+	while (1)
 	{
-		if (time_diff(i, timestamp()) >= time)
-			break ;
+		pthread_mutex_lock(&(rules->death_mutex));
+		if (time_diff(i, timestamp()) >= time || rules->died)
+		{
+			pthread_mutex_unlock(&(rules->death_mutex));
+			break ;	
+		}
+		pthread_mutex_unlock(&(rules->death_mutex));
 		usleep(50);
 	}
 }
@@ -65,6 +71,7 @@ void	smart_sleep(long long time, t_rules *rules)
 void	action_print(t_rules *rules, int id, char *string)
 {
 	pthread_mutex_lock(&(rules->writing));
+	pthread_mutex_lock(&(rules->death_mutex));
 	if (!(rules->died))
 	{
 		printf("%lli ", timestamp() - rules->first_timestamp);
@@ -72,5 +79,6 @@ void	action_print(t_rules *rules, int id, char *string)
 		printf("%s\n", string);
 	}
 	pthread_mutex_unlock(&(rules->writing));
+	pthread_mutex_unlock(&(rules->death_mutex));
 	return ;
 }

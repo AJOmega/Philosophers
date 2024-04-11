@@ -1,10 +1,10 @@
 NAME = philo
 
-CC = cc
+CC = cc -g
 
 FLAGS = -Wall -Wextra -Wextra -pthread
 
-LEAKFLAGS = -g3 -fsanitize=pthread
+LEAKFLAGS = -g3 -fsanitize=thread
 
 RM = rm -rf
 
@@ -24,7 +24,7 @@ $(NAME): $(OBJS)
 clean:
 	$(RM) $(OBJS)
 
-fclean:
+fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all

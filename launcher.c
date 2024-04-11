@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/02/13 23:21:48 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 00:43:28 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	philo_eats(t_philo *philo)
 	if (philo->id < next_philo->id)
 	{
 		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
-		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
 		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
 		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
 	}
@@ -41,7 +40,6 @@ void	philo_eats(t_philo *philo)
 	philo->t_last_meal = timestamp();
 	pthread_mutex_unlock(&(rules->meal_check));
 	smart_sleep(rules->time_eat, rules);
-	(philo->x_ate)++;
 	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
 }
@@ -57,7 +55,7 @@ void	*p_thread(void *void_philosopher)
 	rules = philo->rules;
 	if (philo->id % 2)
 		usleep(15000);
-	while (!(rules->died))
+	while (1)
 	{
 		if (rules->philo_num == 1)
 			philo_alone(philo);
@@ -66,12 +64,21 @@ void	*p_thread(void *void_philosopher)
 		if (rules->all_ate || rules->philo_num == 1)
 			break ;
 		action_print(rules, philo->id, "\033[1;34mis sleeping\033[0m");
+		pthread_mutex_lock(&(rules->death_mutex));
+		if (rules->died)
+		{
+			pthread_mutex_unlock(&(rules->death_mutex));
+			break ;
+		}
+		pthread_mutex_unlock(&(rules->death_mutex));
 		smart_sleep(rules->time_sleep, rules);
 		action_print(rules, philo->id, "\033[1;35mis thinking\033[0m");
 		i++;
 	}
 	return (NULL);
 }
+
+
 
 void	exit_launcher(t_rules *rules, t_philo *philos)
 {
@@ -103,7 +110,9 @@ void	death_checker(t_rules *r, t_philo *p)
 			if (time_diff(p[i].t_last_meal, timestamp()) > r->time_death)
 			{
 				action_print(r, i, "\033[1;31mdied\033[0m");
+				pthread_mutex_lock(&(r->death_mutex));
 				r->died = 1;
+				pthread_mutex_unlock(&(r->death_mutex));
 			}
 			pthread_mutex_unlock(&(r->meal_check));
 			usleep(100);
@@ -118,6 +127,7 @@ void	death_checker(t_rules *r, t_philo *p)
 	}
 }
 
+
 int	launcher(t_rules *rules)
 {
 	int				i;
@@ -130,7 +140,9 @@ int	launcher(t_rules *rules)
 	{
 		if (pthread_create(&(phi[i].thread_id), NULL, p_thread, &(phi[i])))
 			return (1);
+		pthread_mutex_lock(&(rules->meal_check));
 		phi[i].t_last_meal = timestamp();
+		pthread_mutex_unlock(&(rules->meal_check));
 		i++;
 	}
 	death_checker(rules, rules->philosophers);
