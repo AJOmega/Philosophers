@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/11 00:43:28 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 01:02:39 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ void	philo_eats(t_philo *philo)
 	t_philo	*next_philo;
 
 	rules = philo->rules;
-	if (philo->id < rules->philo_num)
-		next_philo = &philo[1];
-	else
-		next_philo = &philo[-1 * (rules->philo_num - 1)];
-	if (philo->id < next_philo->id)
+	if (philo->id < rules->philo_num - 1) {
+        next_philo = &rules->philosophers[philo->id + 1];
+    } else {
+        next_philo = &rules->philosophers[0];  // Correct wrapping around logic
+    }
+	// printf("philo_eats: philo->id: %d, next_philo->id: %d\n", philo->id, next_philo->id);
+	if (philo->id < next_philo->id) // debug
 	{
 		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
 		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
 		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
 	}
@@ -40,6 +43,7 @@ void	philo_eats(t_philo *philo)
 	philo->t_last_meal = timestamp();
 	pthread_mutex_unlock(&(rules->meal_check));
 	smart_sleep(rules->time_eat, rules);
+	(philo->x_ate)++; // Added from github check for problems
 	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
 }
@@ -60,7 +64,10 @@ void	*p_thread(void *void_philosopher)
 		if (rules->philo_num == 1)
 			philo_alone(philo);
 		else
-			philo_eats(philo);
+		{
+			// printf("p_threads: %p\n", philo); // debug
+			philo_eats(philo);	
+		}
 		if (rules->all_ate || rules->philo_num == 1)
 			break ;
 		action_print(rules, philo->id, "\033[1;34mis sleeping\033[0m");
@@ -77,8 +84,6 @@ void	*p_thread(void *void_philosopher)
 	}
 	return (NULL);
 }
-
-
 
 void	exit_launcher(t_rules *rules, t_philo *philos)
 {
@@ -126,7 +131,6 @@ void	death_checker(t_rules *r, t_philo *p)
 			r->all_ate = 1;
 	}
 }
-
 
 int	launcher(t_rules *rules)
 {
