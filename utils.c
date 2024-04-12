@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:54:44 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/11 23:38:26 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 22:38:32 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,19 @@ long long	time_diff(long long past, long long pres)
 	return (pres - past);
 }
 
+// while (!(rules->died))
 void	smart_sleep(long long time, t_rules *rules)
 {
 	long long	i;
 
 	i = timestamp();
-	// while (!(rules->died))
 	while (1)
 	{
 		pthread_mutex_lock(&(rules->death_mutex));
 		if (rules->died || time_diff(i, timestamp()) >= time)
 		{
 			pthread_mutex_unlock(&(rules->death_mutex));
-			break ;	
+			break ;
 		}
 		pthread_mutex_unlock(&(rules->death_mutex));
 		usleep(50);

@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 22:16:50 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/11 23:41:58 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 22:33:56 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	init_mutex(t_rules *rules)
 	if (pthread_mutex_init(&rules->meal_check, NULL) != 0)
 		return (error_handle(6));
 	if (pthread_mutex_init(&rules->death_mutex, NULL) != 0)
+		return (error_handle(6));
+	if (pthread_mutex_init(&rules->x_ate_mutex, NULL) != 0)
 		return (error_handle(6));
 	return (0);
 }

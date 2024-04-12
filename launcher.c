@@ -6,25 +6,28 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/12 01:02:39 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 00:25:38 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// Correct wrapping around logic
+// printf("philo_eats: philo->id: %d, next_philo->id: %d\n", philo->id, 
+// next_philo->id);
+// debug
+// Added from github check for problems
 void	philo_eats(t_philo *philo)
 {
 	t_rules	*rules;
 	t_philo	*next_philo;
 
 	rules = philo->rules;
-	if (philo->id < rules->philo_num - 1) {
-        next_philo = &rules->philosophers[philo->id + 1];
-    } else {
-        next_philo = &rules->philosophers[0];  // Correct wrapping around logic
-    }
-	// printf("philo_eats: philo->id: %d, next_philo->id: %d\n", philo->id, next_philo->id);
-	if (philo->id < next_philo->id) // debug
+	if (philo->id < rules->philo_num - 1)
+		next_philo = &rules->philosophers[philo->id + 1];
+	else
+		next_philo = &rules->philosophers[0];
+	if (philo->id < next_philo->id) 
 	{
 		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
 		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
@@ -43,11 +46,14 @@ void	philo_eats(t_philo *philo)
 	philo->t_last_meal = timestamp();
 	pthread_mutex_unlock(&(rules->meal_check));
 	smart_sleep(rules->time_eat, rules);
-	(philo->x_ate)++; // Added from github check for problems
+	pthread_mutex_lock(&(rules->x_ate_mutex));
+	(philo->x_ate)++;
+	pthread_mutex_unlock(&(rules->x_ate_mutex));
 	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
 }
 
+// printf("p_threads: %p\n", philo); // debug
 void	*p_thread(void *void_philosopher)
 {
 	int				i;
@@ -61,12 +67,13 @@ void	*p_thread(void *void_philosopher)
 		usleep(15000);
 	while (1)
 	{
+		if (rules->all_ate || rules->philo_num == 1)
+			break ;
 		if (rules->philo_num == 1)
 			philo_alone(philo);
 		else
 		{
-			// printf("p_threads: %p\n", philo); // debug
-			philo_eats(philo);	
+			philo_eats(philo);
 		}
 		if (rules->all_ate || rules->philo_num == 1)
 			break ;
@@ -126,6 +133,18 @@ void	death_checker(t_rules *r, t_philo *p)
 			break ;
 		i = 0;
 		while (r->nb_eat != -1 && i < r->philo_num && p[i].x_ate >= r->nb_eat)
+		while (1)
+		{
+			pthread_mutex_lock(&(r->x_ate_mutex));
+			if (r->nb_eat != -1 && i < r->philo_num && p[i].x_ate >= r->nb_eat)
+				i++;
+			else
+			{
+				pthread_mutex_unlock(&(r->x_ate_mutex));
+				break ;	
+			}
+			pthread_mutex_unlock(&(r->x_ate_mutex));
+		}
 			i++;
 		if (i == r->philo_num)
 			r->all_ate = 1;
