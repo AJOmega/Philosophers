@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 17:28:56 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 11:16:33 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 13:03:42 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ void	*p_thread_part2(int i, t_philo *philo, t_rules *rules)
 {
 	while (1 || i++)
 	{
+		if (rules->philo_num == 1)
+			philo_alone(philo);
+		else
+			philo_eats(philo);
 		pthread_mutex_lock(&(rules->all_ate_mutex));
 		if (rules->all_ate || rules->philo_num == 1)
 		{
@@ -61,10 +65,6 @@ void	*p_thread_part2(int i, t_philo *philo, t_rules *rules)
 			break ;
 		}
 		pthread_mutex_unlock(&(rules->all_ate_mutex));
-		if (rules->philo_num == 1)
-			philo_alone(philo);
-		else
-			philo_eats(philo);
 		action_print(rules, philo->id, "\033[1;34mis sleeping\033[0m");
 		pthread_mutex_lock(&(rules->death_mutex));
 		if (rules->died)

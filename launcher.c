@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 11:16:47 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 13:12:31 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*p_thread(void *void_philosopher)
 	philo = (t_philo *)void_philosopher;
 	rules = philo->rules;
 	if (philo->id % 2)
-		usleep(15000);
+		usleep(100);
 	p_thread_part2(i, philo, rules);
 	return (NULL);
 }
