@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 01:12:33 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 01:20:56 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	*p_thread(void *void_philosopher)
 		if (rules->all_ate || rules->philo_num == 1)
 		{
 			pthread_mutex_unlock(&(rules->all_ate_mutex));
-			break ;	
+			break ;
 		}
 		pthread_mutex_unlock(&(rules->all_ate_mutex));
 		if (rules->philo_num == 1)
