@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/12 22:33:53 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 01:06:45 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_rules
 	pthread_mutex_t		writing;
 	pthread_mutex_t		death_mutex;
 	pthread_mutex_t		x_ate_mutex;
+	pthread_mutex_t		all_ate_mutex;
 	t_philo				philosophers[250];
 }	t_rules;
 

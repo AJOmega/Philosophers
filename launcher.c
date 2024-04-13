@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 00:25:38 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 01:12:33 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	philo_eats(t_philo *philo)
 		next_philo = &rules->philosophers[philo->id + 1];
 	else
 		next_philo = &rules->philosophers[0];
-	if (philo->id < next_philo->id) 
+	if (philo->id < next_philo->id)
 	{
 		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
 		action_print(rules, philo->id, "\033[1;33mhas taken a fork\033[0m");
@@ -67,16 +67,19 @@ void	*p_thread(void *void_philosopher)
 		usleep(15000);
 	while (1)
 	{
+		pthread_mutex_lock(&(rules->all_ate_mutex));
 		if (rules->all_ate || rules->philo_num == 1)
-			break ;
+		{
+			pthread_mutex_unlock(&(rules->all_ate_mutex));
+			break ;	
+		}
+		pthread_mutex_unlock(&(rules->all_ate_mutex));
 		if (rules->philo_num == 1)
 			philo_alone(philo);
 		else
 		{
 			philo_eats(philo);
 		}
-		if (rules->all_ate || rules->philo_num == 1)
-			break ;
 		action_print(rules, philo->id, "\033[1;34mis sleeping\033[0m");
 		pthread_mutex_lock(&(rules->death_mutex));
 		if (rules->died)
@@ -132,22 +135,20 @@ void	death_checker(t_rules *r, t_philo *p)
 		if (r->died)
 			break ;
 		i = 0;
+		pthread_mutex_lock(&(r->x_ate_mutex));
 		while (r->nb_eat != -1 && i < r->philo_num && p[i].x_ate >= r->nb_eat)
-		while (1)
 		{
-			pthread_mutex_lock(&(r->x_ate_mutex));
-			if (r->nb_eat != -1 && i < r->philo_num && p[i].x_ate >= r->nb_eat)
-				i++;
-			else
-			{
-				pthread_mutex_unlock(&(r->x_ate_mutex));
-				break ;	
-			}
 			pthread_mutex_unlock(&(r->x_ate_mutex));
-		}
 			i++;
+			pthread_mutex_lock(&(r->x_ate_mutex));
+		}
+		pthread_mutex_unlock(&(r->x_ate_mutex));
 		if (i == r->philo_num)
+		{
+			pthread_mutex_lock(&(r->all_ate_mutex));
 			r->all_ate = 1;
+			pthread_mutex_unlock(&(r->all_ate_mutex));
+		}
 	}
 }
 
