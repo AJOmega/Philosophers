@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 16:58:49 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 18:03:06 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	philo_eats(t_philo *philo)
 	t_philo	*next_philo;
 
 	rules = philo->rules;
+	if (philo->id % 2)
+		usleep(100);
 	if (philo->id < rules->philo_num - 1)
 		next_philo = &rules->philosophers[philo->id + 1];
 	else
