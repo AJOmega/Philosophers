@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 01:06:45 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:14:36 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ typedef struct s_rules
 // Main.c
 
 void		philo_alone(t_philo *philo);
+void		philo_eats_part2(t_philo *philo, t_rules *rules);
+void		*p_thread_part2(int i, t_philo *philo, t_rules *rules);
+void		death_checker_part2(t_rules *r, t_philo *p, int i);
 
 // Init.c
 
