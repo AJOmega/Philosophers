@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 13:12:31 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:58:49 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	death_checker(t_rules *r, t_philo *p)
 				pthread_mutex_unlock(&(r->death_mutex));
 			}
 			pthread_mutex_unlock(&(r->meal_check));
-			usleep(100);
+			usleep(1);
 		}
 		if (r->died)
 			break ;

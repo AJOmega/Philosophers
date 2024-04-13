@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:54:44 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/12 22:38:32 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:59:10 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ int	ft_atoi(char *str)
 		sign *= -1;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	while (str[i] && (str[i] >= 48 && str[i] <= 57))
+	while (str[i])
 	{
-		result = result * 10 + (str[i] - 48);
+		if (str[i] >= 48 && str[i] <= 57)
+			result = result * 10 + (str[i] - 48);
+		else
+			return (-1);
 		i++;
 	}
 	return (result * sign);
@@ -64,7 +67,7 @@ void	smart_sleep(long long time, t_rules *rules)
 			break ;
 		}
 		pthread_mutex_unlock(&(rules->death_mutex));
-		usleep(50);
+		usleep(1);
 	}
 }
 
@@ -82,3 +85,13 @@ void	action_print(t_rules *rules, int id, char *string)
 	pthread_mutex_unlock(&(rules->death_mutex));
 	return ;
 }
+
+// long long	ft_usleep(long long time)
+// {
+// 	long long start;
+
+// 	start = timestamp();
+// 	while ((timestamp() - start) < time)
+// 		usleep(time / 10);
+// 	return (0);
+// }

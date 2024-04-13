@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 11:14:36 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:59:44 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ long long	timestamp(void);
 long long	time_diff(long long past, long long pres);
 void		smart_sleep(long long time, t_rules *rules);
 void		action_print(t_rules *rules, int id, char *string);
+// long long	ft_usleep(long long time);
 
 // error_handle.c
 
