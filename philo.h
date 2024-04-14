@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 18:49:50 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:20:24 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ long long	time_diff(long long past, long long pres);
 
 // threads.c
 
-void		*p_thread(void *void_philosopher);
-void		*p_thread_part2(t_philo *philo, t_rules *rules);
+void		*main_thread(void *void_philosopher);
+void		*main_thread_part2(t_philo *philo, t_rules *rules);
 int			launcher(t_rules *rules);
 
 // eating.c

@@ -6,13 +6,13 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:34:51 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 16:24:10 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:21:43 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*p_thread(void *void_philosopher)
+void	*main_thread(void *void_philosopher)
 {
 	t_philo			*philo;
 	t_rules			*rules;
@@ -21,11 +21,11 @@ void	*p_thread(void *void_philosopher)
 	rules = philo->rules;
 	if (philo->id % 2)
 		usleep(100);
-	p_thread_part2(philo, rules);
+	main_thread_part2(philo, rules);
 	return (NULL);
 }
 
-void	*p_thread_part2(t_philo *philo, t_rules *rules)
+void	*main_thread_part2(t_philo *philo, t_rules *rules)
 {
 	while (1)
 	{
@@ -62,7 +62,7 @@ int	launcher(t_rules *rules)
 	rules->first_timestamp = timestamp();
 	while (i < rules->philo_num)
 	{
-		if (pthread_create(&(phi[i].thread_id), NULL, p_thread, &(phi[i])))
+		if (pthread_create(&(phi[i].thread_id), NULL, main_thread, &(phi[i])))
 			return (1);
 		pthread_mutex_lock(&(rules->meal_check));
 		phi[i].t_last_meal = timestamp();
