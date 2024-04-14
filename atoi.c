@@ -6,13 +6,13 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 12:21:49 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 15:13:55 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:12:32 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(char *str)
+long long	ft_atoi(char *str)
 {
 	int	i;
 	int	sign;

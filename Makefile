@@ -10,6 +10,7 @@ RM = rm -rf
 
 SRCS = main.c error_handle.c atoi.c time_manager.c \
 		init.c eating.c actions.c exit.c threads.c\
+		max_protection.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 16:24:47 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:49:50 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			init_all(t_rules *rules, char *argv[]);
 
 // atoi.c
 
-int			ft_atoi(char *str);
+long long	ft_atoi(char *str);
 
 // time_manager.c
 
@@ -98,5 +98,10 @@ void		print_state(t_rules *rules, int id, char *string);
 void		death(t_rules *r, t_philo *p);
 void		death_part2(t_rules *r, t_philo *p, int i);
 void		end(t_rules *rules, t_philo *philos);
+
+// max_protection.c
+
+int			int_protected(long long result);
+int			check_extremes(t_rules *rules);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 22:16:50 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 15:15:22 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:54:45 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,11 @@ int	init_all(t_rules *rules, char *argv[])
 	rules->time_death = ft_atoi(argv[2]);
 	rules->time_eat = ft_atoi(argv[3]);
 	rules->time_sleep = ft_atoi(argv[4]);
-	if (rules->philo_num == -1 || rules->time_death == -1 || \
-		rules->time_eat == -1 || rules->time_sleep == -1)
-		return (error_handle(2));
 	rules->all_ate = 0;
 	rules->died = 0;
-	if (rules->philo_num < 1 || rules->time_death <= 0 || rules->time_eat <= 0 || \
-		rules->time_sleep <= 0 || (argv[5] && ft_atoi(argv[5]) <= 0) || \
-		rules->philo_num > 200)
+	if (rules->philo_num < 1 || rules->time_death < 1 || rules->time_eat < 1 \
+		|| rules->time_sleep < 1 || (argv[5] && ft_atoi(argv[5]) < 1) \
+		|| rules->philo_num > 200)
 		return (error_handle(2));
 	if (argv[5])
 	{
@@ -77,8 +74,10 @@ int	init_all(t_rules *rules, char *argv[])
 	}
 	else
 		rules->nb_eat = -1;
+	if (check_extremes(rules) == -1)
+		return (error_handle(2));
 	if (init_mutex(rules) != 0)
-		return (error_handle(6));
+		return (error_handle(2));
 	init_philosophers(rules);
 	return (0);
 }
