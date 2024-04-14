@@ -65,8 +65,8 @@ int	init_all(t_rules *rules, char *argv[])
 		return (error_handle(2));
 	rules->all_ate = 0;
 	rules->died = 0;
-	if (rules->philo_num < 1 || rules->time_death < 0 || rules->time_eat < 0 || \
-		rules->time_sleep < 0 || (argv[5] && ft_atoi(argv[5]) < 0) || \
+	if (rules->philo_num < 1 || rules->time_death <= 0 || rules->time_eat <= 0 || \
+		rules->time_sleep <= 0 || (argv[5] && ft_atoi(argv[5]) <= 0) || \
 		rules->philo_num > 200)
 		return (error_handle(2));
 	if (argv[5])
