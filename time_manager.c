@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/11 17:28:56 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/14 15:14:18 by jabreu-d         ###   ########.fr       */
+/*   Created: 2024/04/14 12:19:15 by jabreu-d          #+#    #+#             */
+/*   Updated: 2024/04/14 15:15:04 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+long long	timestamp(void)
 {
-	t_rules		rules;
-	int			return_value;
+	struct timeval	t;
 
-	if (argc != 5 && argc != 6)
-		return (error_handle(1));
-	return_value = init_all(&rules, argv);
-	if (return_value)
-		return (return_value);
-	if (launcher(&rules) != 0)
-		return (5);
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+long long	time_diff(long long past, long long pres)
+{
+	return (pres - past);
 }

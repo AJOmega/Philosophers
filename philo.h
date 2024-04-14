@@ -6,7 +6,7 @@
 /*   By: jabreu-d <jabreu-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 19:17:48 by jabreu-d          #+#    #+#             */
-/*   Updated: 2024/04/13 16:59:44 by jabreu-d         ###   ########.fr       */
+/*   Updated: 2024/04/14 16:24:47 by jabreu-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,48 @@ typedef struct s_rules
 	t_philo				philosophers[250];
 }	t_rules;
 
-// Main.c
-
-void		philo_alone(t_philo *philo);
-void		philo_eats_part2(t_philo *philo, t_rules *rules);
-void		*p_thread_part2(int i, t_philo *philo, t_rules *rules);
-void		death_checker_part2(t_rules *r, t_philo *p, int i);
-
-// Init.c
-
-int			init_mutex(t_rules *rules);
-int			init_philosophers(t_rules *rules);
-int			init_all(t_rules *rules, char *argv[]);
-
-// utils.c
-
-int			ft_atoi(char *str);
-long long	timestamp(void);
-long long	time_diff(long long past, long long pres);
-void		smart_sleep(long long time, t_rules *rules);
-void		action_print(t_rules *rules, int id, char *string);
-// long long	ft_usleep(long long time);
+// main.c
 
 // error_handle.c
 
 int			error_handle(int error);
 
-// launcher.c
+// init.c
 
-void		philo_eats(t_philo *philo);
+int			init_mutex(t_rules *rules);
+int			init_philosophers(t_rules *rules);
+int			init_all(t_rules *rules, char *argv[]);
+
+// atoi.c
+
+int			ft_atoi(char *str);
+
+// time_manager.c
+
+long long	timestamp(void);
+long long	time_diff(long long past, long long pres);
+
+// threads.c
+
 void		*p_thread(void *void_philosopher);
-void		exit_launcher(t_rules *rules, t_philo *philos);
-void		death_checker(t_rules *r, t_philo *p);
+void		*p_thread_part2(t_philo *philo, t_rules *rules);
 int			launcher(t_rules *rules);
+
+// eating.c
+
+void		philo_alone(t_philo *philo);
+void		philo_eats(t_philo *philo);
+void		philo_eats_part2(t_philo *philo, t_rules *rules);
+
+// actions.c
+
+void		sleep_action(long long time, t_rules *rules);
+void		print_state(t_rules *rules, int id, char *string);
+
+// exit.c
+
+void		death(t_rules *r, t_philo *p);
+void		death_part2(t_rules *r, t_philo *p, int i);
+void		end(t_rules *rules, t_philo *philos);
 
 #endif
